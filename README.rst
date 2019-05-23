@@ -21,7 +21,7 @@ Run Command
 
   docker run hsorby/opencor_python 3.0
 
-Where number '3.0' passed in as an argument which controls the stimulation period for the model.  Any number suitable for a stimulation period can be used to generate different outputs.
+Where the number '3.0' passed in as an argument which controls the stimulation period for the model.  Any number suitable for a stimulation period can be used to generate different outputs.
 
 Output
 ------
