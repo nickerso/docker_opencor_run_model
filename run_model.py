@@ -1,22 +1,21 @@
 import sys
 import json
 
-import OpenCOR as oc
+import OpenCOR
 
 
-# ./OpenCOR-2019-05-18-Linux/bin/OpenCOR -c PythonRunScript::script run_model.py 7
 def main(stimulus_period):
-    s = oc.openSimulation('/home/opencor/models/action-potential.xml')
+    s = OpenCOR.openSimulation('/home/opencor/models/action-potential.xml')
 
     d = s.data()
 
     # Set integration range
-    d.setPointInterval(10) #ms
-    d.setEndingPoint(100000) #ms
+    d.setPointInterval(10)  # ms
+    d.setEndingPoint(100000)  # ms
 
     # print('Setting stimulus period to:', stimulus_period)
     c = d.constants()
-    c['membrane/period'] = stimulus_period #ms
+    c['membrane/period'] = stimulus_period  # ms
 
     # Run the simulation
     s.run()
