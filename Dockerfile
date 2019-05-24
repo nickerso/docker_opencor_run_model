@@ -15,10 +15,11 @@ RUN apt-get -qq update && apt-get install -y \
 #ADD https://github.com/dbrnz/opencor/releases/download/snapshot-2019-05-17/OpenCOR-2019-05-18-Linux.tar.gz /home/opencor
 
 # The alternate option is to add the pre-downloaded binary from the local disk (assuming you have it locally available).
-ADD ./OpenCOR-2019-05-18-Linux.tar.gz /home/opencor
+ADD ./OpenCOR-2019-05-23-Linux.tar.gz /home/opencor
 
 COPY ./entrypoint.sh /usr/local/bin
-COPY ./noble_varghese_kohl_noble_1998_a.cellml /home/opencor/models/
+COPY ./Ohara_Rudy_2011.cellml /home/opencor/models/
+COPY ./action-potential.xml /home/opencor/models/
 COPY ./run_model.py /home/opencor/
 
 WORKDIR /home/opencor
