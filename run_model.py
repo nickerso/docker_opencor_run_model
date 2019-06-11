@@ -5,6 +5,7 @@ import OpenCOR
 
 
 def main(stimulus_period):
+    rc = 3
     s = OpenCOR.openSimulation('/home/opencor/models/action-potential.xml')
 
     d = s.data()
@@ -18,12 +19,19 @@ def main(stimulus_period):
     c['membrane/period'] = stimulus_period  # ms
 
     # Run the simulation
-    s.run()
+    try:
+        if s.run():
+            r = s.results()
 
-    r = s.results()
+            json_format = json.dumps({'membrane': {'v': r.states()['membrane/v'].values().tolist()}})
+            print(json_format)
+            rc = 0
+        else:
+            rc = 4
+    except RuntimeError:
+        rc = 5
 
-    json_format = json.dumps({'membrane': {'v': r.states()['membrane/v'].values().tolist()}})
-    print(json_format)
+    return rc
 
 
 if __name__ == "__main__":
@@ -36,4 +44,6 @@ if __name__ == "__main__":
         print("  where <float> is the stimulation period in milliseconds as a decimal number.")
         sys.exit(2)
 
-    main(period)
+    rc = main(period)
+    sys.exit(rc)
+
