@@ -23,8 +23,8 @@ RUN tar -xvzf OpenCOR-2019-06-11-Linux.tar.gz && \
 #ADD ./OpenCOR-2019-06-11-Linux.tar.gz /home/opencor/
 
 COPY ./entrypoint.sh /usr/local/bin
-COPY ./Ohara_Rudy_2011.cellml /home/opencor/models/
-COPY ./action-potential.xml /home/opencor/models/
+COPY ./HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.cellml /home/opencor/models/
+COPY ./HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml /home/opencor/models/
 COPY ./run_model.py /home/opencor/
 
 ADD VERSION .
