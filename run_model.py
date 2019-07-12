@@ -1,12 +1,14 @@
 import sys
 import json
+from scipy.signal import find_peaks
 
 import OpenCOR
 
 
 def main(stimulation_mode, stimulation_level):
     return_code = 0
-    s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
+    #s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
+    s = OpenCOR.openSimulation('HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
     d = s.data()
     c = d.constants()
     c['Rate_modulation_experiments/Iso_1_uM'] = 1.0  # dimensionless
@@ -23,7 +25,10 @@ def main(stimulation_mode, stimulation_level):
     try:
         if return_code == 0 and s.run():
             r = s.results()
-            json_format = json.dumps({'membrane': {'v': r.algebraic()['Membrane/V'].values().tolist()}})
+            output_data = {'membrane': {'v': r.algebraic()['Membrane/V'].values().tolist()}}
+            peaks = find_peaks(output_data['membrane']['v'])[0]
+            output_data['heart_rate'] = len(peaks)
+            json_format = json.dumps(output_data)
             print(json_format)
         else:
             return_code = 5
