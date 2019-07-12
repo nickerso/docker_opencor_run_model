@@ -7,9 +7,12 @@ import OpenCOR
 
 def main(stimulation_mode_parameter, stimulation_level_parameter):
     return_code = 0
+
     s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
     d = s.data()
     c = d.constants()
+    stimulation_level_parameter = max(0.0, min(1.0, stimulation_level_parameter))
+
     c['Rate_modulation_experiments/Iso_1_uM'] = 1.0  # dimensionless
     if stimulation_mode_parameter == 1:
         # Stellate stimulation 0 - 1 :: 22 - 0
