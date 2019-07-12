@@ -8,7 +8,7 @@ This repository holds the files required to build a Docker image that runs a sim
 Build Command
 -------------
 
-You will need to get a copy of the OpenCOR binary from `here <https://github.com/dbrnz/opencor/releases/download/snapshot-2019-05-23/OpenCOR-2019-05-23-Linux.tar.gz>`_.  Save this in the directory where the 'Dockerfile' file exists.
+You will need to get a copy of the OpenCOR binary from `here <https://github.com/dbrnz/opencor/releases/download/snapshot-2019-06-11/OpenCOR-2019-06-11-Linux.tar.gz>`_.  Save this in the directory where the 'Dockerfile' file exists.
 
 ::
   
@@ -19,12 +19,40 @@ Run Command
 
 ::
 
-  docker run hsorby/opencor-python 1000.0
+  docker run hsorby/opencor-python <int> <float>
 
-Where the number '1000.0' passed in as an argument which controls the stimulation period for the model in milliseconds.  Any number suitable for a stimulation period can be used to generate different outputs.
+where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal) and <float> is the stimulation level (0-1) as a decimal number.
 
 Output
 ------
 
-The model outputs the membrane potential 'v' at each time step.  The output is in json format.
+The output is a JSON string with the membrane potential 'v' at each time step and the heart rate in beats per minute, as per the sample shown below.
+
+::
+
+    {
+        "heart_rate": 73,
+        "membrane": {
+            "v": [-47.78, -47.82, -47.85, ...]
+        }
+    }
+
+Implementation notes
+--------------------
+
+We are using the Fabbri et al (2017) sinoatrial cell model: https://models.physiomeproject.org/e/568
+
+The model includes autonomic modulation via inclusion of the effects of ACh on I\ :sub:`f`, I\ :sub:`CaL`, SR calcium uptake, and I\ :sub:`K,ACh`; and the effect of isoprenaline on I\ :sub:`f`, I\ :sub:`CaL`, I\ :sub:`NaK`, maximal Ca uptake, and I\ :sub:`Ks`. We are varying the concentration of ACh according to the stimulation level, while isoprenaline is encoded to be "on" or "off" only (we use the "on" version in this exemplar). The range of ACh we're allowing is beyond what has been presented in the paper.
+
+Example output
+++++++++++++++
+
+Plotted example data when using this container to simulate various levels of stellate stimulation:
+
+.. image:: stellate-stimulation.png
+
+Plotted example data when using this container to simulate various levels of vagus stimulation:
+
+.. image:: vagus-stimulation.png
+
 
