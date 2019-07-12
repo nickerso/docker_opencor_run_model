@@ -5,42 +5,32 @@ import OpenCOR
 
 
 def main(stimulation_mode, stimulation_level):
-    rc = 3
-    #s = OpenCOR.openSimulation('/home/opencor/models/action-potential.xml')
+    return_code = 0
     s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
-
     d = s.data()
-
-    # Set integration range
-    d.setPointInterval(0.01)  # s
-    d.setEndingPoint(10)  # s
-
-    #print('Setting stimulation mode to:', stimulation_mode)
-    #print('Setting stimulation level to:', stimulation_level)
     c = d.constants()
     c['Rate_modulation_experiments/Iso_1_uM'] = 1.0  # dimensionless
     if stimulation_mode == 1:
         # Stellate stimulation 0 - 1 :: 22 - 0
         c['Rate_modulation_experiments/ACh'] = (1.0-stimulation_level) * 22.0e-6
-    else:
+    elif stimulation_mode == 2:
         # Vagus stimulation 0 - 1 :: 22 - 38
         c['Rate_modulation_experiments/ACh'] = 22.0e-6 + stimulation_level * (38.0e-6 - 22.0e-6)
-
+    else:
+        return_code = 4
 
     # Run the simulation
     try:
-        if s.run():
+        if return_code == 0 and s.run():
             r = s.results()
-
             json_format = json.dumps({'membrane': {'v': r.algebraic()['Membrane/V'].values().tolist()}})
             print(json_format)
-            rc = 0
         else:
-            rc = 4
+            return_code = 5
     except RuntimeError:
-        rc = 5
+        return_code = 6
 
-    return rc
+    return return_code
 
 
 if __name__ == "__main__":
