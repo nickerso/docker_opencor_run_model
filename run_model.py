@@ -5,19 +5,18 @@ from scipy.signal import find_peaks
 import OpenCOR
 
 
-def main(stimulation_mode, stimulation_level):
+def main(stimulation_mode_parameter, stimulation_level_parameter):
     return_code = 0
-    #s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
-    s = OpenCOR.openSimulation('HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
+    s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
     d = s.data()
     c = d.constants()
     c['Rate_modulation_experiments/Iso_1_uM'] = 1.0  # dimensionless
-    if stimulation_mode == 1:
+    if stimulation_mode_parameter == 1:
         # Stellate stimulation 0 - 1 :: 22 - 0
-        c['Rate_modulation_experiments/ACh'] = (1.0-stimulation_level) * 22.0e-6
-    elif stimulation_mode == 2:
+        c['Rate_modulation_experiments/ACh'] = (1.0 - stimulation_level_parameter) * 22.0e-6
+    elif stimulation_mode_parameter == 2:
         # Vagus stimulation 0 - 1 :: 22 - 38
-        c['Rate_modulation_experiments/ACh'] = 22.0e-6 + stimulation_level * (38.0e-6 - 22.0e-6)
+        c['Rate_modulation_experiments/ACh'] = 22.0e-6 + stimulation_level_parameter * (38.0e-6 - 22.0e-6)
     else:
         return_code = 4
 
@@ -54,4 +53,3 @@ if __name__ == "__main__":
 
     rc = main(stimulation_mode, stimulation_level)
     sys.exit(rc)
-
