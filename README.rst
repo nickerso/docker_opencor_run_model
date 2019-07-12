@@ -19,7 +19,7 @@ Run Command
 
 ::
 
-  docker run hsorby/opencor-python <int> <float>")
+  docker run hsorby/opencor-python <int> <float>
 
 where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal) and <float> is the stimulation level (0-1) as a decimal number.
 
@@ -42,7 +42,7 @@ Implementation notes
 
 We are using the Fabbri et al (2017) sinoatrial cell model: https://models.physiomeproject.org/e/568
 
-The model includes autonomic modulation via inclusion of the effects of ACh on I\ :sub:`f`, I\ :sub:`CaL`, SR calcium uptake, and I\ :sub:`K,ACh`; and the effect of isoprenaline on I\ :sub:`f`, I\ :sub:`CaL`, I\ :sub:`NaK`, maximal Ca uptake, and I\ :sub:`Ks`. We are varying the concentration of ACh according to the stimulation level, while isoprenaline is encoded to be "on" or "off" only (we use the "on" version in this exemplar. The range of ACh we're allowing is beyond what has been presented in the paper.
+The model includes autonomic modulation via inclusion of the effects of ACh on I\ :sub:`f`, I\ :sub:`CaL`, SR calcium uptake, and I\ :sub:`K,ACh`; and the effect of isoprenaline on I\ :sub:`f`, I\ :sub:`CaL`, I\ :sub:`NaK`, maximal Ca uptake, and I\ :sub:`Ks`. We are varying the concentration of ACh according to the stimulation level, while isoprenaline is encoded to be "on" or "off" only (we use the "on" version in this exemplar). The range of ACh we're allowing is beyond what has been presented in the paper.
 
 Example output
 ++++++++++++++
