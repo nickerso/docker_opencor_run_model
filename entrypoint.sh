@@ -1,14 +1,15 @@
 #!/bin/bash
 set -e #Exit immediately if a command exits with a non-zero status.
 
-PERIOD=$1
+STIM_MODE=$1
+STIM_LEVEL=$2
 
-if [ "x$PERIOD" == "x-h" ]; then
+if [ "x$STIM_MODE" == "x-h" ]; then
   echo "Usage: docker run hsorby/opencor-python <int> <float>"
-  echo "  where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal)."
-  echo "  where <float> is the stimulation level (0-1) as a decimal number."
+  echo "  where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal)"
+  echo "  and <float> is the stimulation level in the interval [0-1] as a decimal number."
   exit 1
 else
-  exec ./OpenCOR-2019-06-11-Linux/bin/OpenCOR -c PythonRunScript::script run_model.py $PERIOD
+  exec ./OpenCOR-2019-06-11-Linux/bin/OpenCOR -c PythonRunScript::script run_model.py $STIM_MODE $STIM_LEVEL
 fi
 

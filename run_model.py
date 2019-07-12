@@ -40,6 +40,12 @@ def main(stimulation_mode_parameter, stimulation_level_parameter):
     return return_code
 
 
+def usage():
+    print("Usage: docker run hsorby/opencor-python <int> <float>")
+    print("  where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal).")
+    print("  where <float> is the stimulation level (0-1) as a decimal number.")
+
+
 if __name__ == "__main__":
     args = sys.argv
     args.pop(0)  # Script name.
@@ -49,9 +55,10 @@ if __name__ == "__main__":
         stimulation_mode = int(args.pop(0))
         stimulation_level = float(args.pop(0))
     except ValueError:
-        print("Usage: docker run hsorby/opencor-python <int> <float>")
-        print("  where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal).")
-        print("  where <float> is the stimulation level (0-1) as a decimal number.")
+        usage()
+        sys.exit(2)
+    except IndexError:
+        usage()
         sys.exit(2)
 
     rc = main(stimulation_mode, stimulation_level)
