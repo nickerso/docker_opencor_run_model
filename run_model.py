@@ -2,13 +2,13 @@ import sys
 import json
 from scipy.signal import find_peaks
 
-import OpenCOR
+import opencor
 
 
 def main(stimulation_mode, stimulation_level):
     return_code = 0
     #s = OpenCOR.openSimulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
-    s = OpenCOR.openSimulation('HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
+    s = opencor.open_simulation('models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
     d = s.data()
     c = d.constants()
     c['Rate_modulation_experiments/Iso_1_uM'] = 1.0  # dimensionless
