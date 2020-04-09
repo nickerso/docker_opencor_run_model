@@ -5,8 +5,8 @@ from scipy.signal import find_peaks
 import opencor
 
 
-def main(stimulation_mode_parameter, stimulation_level_parameter):
-    return_code = 0
+def run_model(stimulation_mode_parameter, stimulation_level_parameter):
+    result = {'return_code': 0}
     s = opencor.open_simulation('/home/opencor/models/HumanSAN_Fabbri_Fantini_Wilders_Severi_2017.sedml')
     d = s.data()
     c = d.constants()
@@ -20,23 +20,23 @@ def main(stimulation_mode_parameter, stimulation_level_parameter):
         # Vagus stimulation 0 - 1 :: 22 - 38
         c['Rate_modulation_experiments/ACh'] = 22.0e-6 + stimulation_level_parameter * (38.0e-6 - 22.0e-6)
     else:
-        return_code = 4
+        result['return_code'] = 4
 
     # Run the simulation
     try:
-        if return_code == 0 and s.run():
+        if result['return_code'] == 0 and s.run():
             r = s.results()
-            output_data = {'membrane': {'v': r.algebraic()['Membrane/V'].values().tolist()}}
-            peaks = find_peaks(output_data['membrane']['v'])[0]
-            output_data['heart_rate'] = len(peaks)
-            json_format = json.dumps(output_data)
-            print(json_format)
+            result['output_data'] = {'membrane': {'v': r.algebraic()['Membrane/V'].values().tolist()}}
+            peaks = find_peaks(result['output_data']['membrane']['v'])[0]
+            result['output_data']['heart_rate'] = len(peaks)
+            #json_format = json.dumps(output_data)
+            #print(json_format)
         else:
-            return_code = 5
+            result['return_code'] = 5
     except RuntimeError:
-        return_code = 6
+        result['return_code'] = 6
 
-    return return_code
+    return result
 
 
 def usage():

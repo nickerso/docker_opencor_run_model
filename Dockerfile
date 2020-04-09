@@ -1,4 +1,4 @@
-FROM python:3
+FROM ubuntu:18.04
 
 # Acquire libraries required for running OpenCOR from the command line.
 RUN apt-get -qq update && apt-get install -y \
@@ -9,7 +9,6 @@ RUN apt-get -qq update && apt-get install -y \
  libx11-xcb1 \
  libxext6 \
  libxslt1.1 \
- dos2unix \
  sqlite3
 
 WORKDIR /home/opencor
@@ -22,8 +21,7 @@ WORKDIR /home/opencor
 # The alternate option is to add the pre-downloaded binary from the local disk (assuming you have it locally available).
 ADD ./OpenCOR-2020-02-14-Linux.tar.gz /home/opencor/
 
-COPY requirements.txt /home/opencor
-RUN pip install -r /home/opencor/requirements.txt
+RUN /home/opencor/OpenCOR-2020-02-14-Linux/pythonshell -m pip install sanic
 
 COPY server.py /home/opencor/
 
@@ -35,5 +33,5 @@ COPY ./run_model.py /home/opencor/
 
 ADD VERSION .
 
-ENTRYPOINT ["python", "/home/opencor/server.py"]
+ENTRYPOINT ["/home/opencor/OpenCOR-2020-02-14-Linux/pythonshell", "/home/opencor/server.py"]
 
