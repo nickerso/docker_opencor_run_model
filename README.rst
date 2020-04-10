@@ -1,32 +1,40 @@
 
 
-Docker for OpenCOR
-==================
+Docker for OpenCOR with Sanic
+=============================
 
 This repository holds the files required to build a Docker image that runs a simulation of a CellML model using OpenCOR with Python.
+It achieves this by serving a Sanic service which allows simulations to be executed via a web API.
+The Sanic server is installed into the internal OpenCOR Python interpreter and that is the interpreter used to run the server.
 
 Build Command
 -------------
 
-You will need to get a copy of the OpenCOR binary from `here <https://github.com/dbrnz/opencor/releases/download/snapshot-2019-06-11/OpenCOR-2019-06-11-Linux.tar.gz>`_.  Save this in the directory where the 'Dockerfile' file exists.
+You will need to get a copy of the OpenCOR binary from `here <https://opencor.ws/downloads/snapshots/2020-02-14/OpenCOR-2020-02-14-Linux.tar.gz>`_.
+Save this in the directory where the 'Dockerfile' file exists.
 
 ::
   
-  docker build --rm -t hsorby/opencor-python .
+  docker build --rm -t opencor-python/sanic .
 
 Run Command
 -----------
 
+The Sanic server runs in the container under port 8000.
+This needs to be mapped to a port on the host if you would like to access this outside the container.
+
 ::
 
-  docker run hsorby/opencor-python <int> <float>
+  docker run -p 12345:8000 -d opencor-python/sanic
 
-where <int> is the stimulation mode as an integer number (1:stellate; 2:vagal) and <float> is the stimulation level (0-1) as a decimal number.
 
-Output
-------
 
-The output is a JSON string with the membrane potential 'v' at each time step and the heart rate in beats per minute, as per the sample shown below.
+Using
+-----
+
+Using the above run command, you can run a simulation by accessing the URL http://localhost:12345/run_model?stim_mode=1&stim_level=0.5 where the stim_mode is the stimulation mode as an integer number (1:stellate; 2:vagal) and stim_level is the stimulation level (0-1) as a decimal number.
+
+The result is a JSON object (printed in the browser window) with the membrane potential 'v' at each time step and the heart rate in beats per minute, as per the sample shown below.
 
 ::
 
