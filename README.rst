@@ -25,7 +25,7 @@ This needs to be mapped to a port on the host if you would like to access this o
 
 ::
 
-  docker run -p 12345:8000 -d opencor-python/sanic
+  docker run --rm --name opencor-python-sanic -p 12345:8000 -d opencor-python/sanic
 
 
 
